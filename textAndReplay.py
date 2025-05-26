@@ -61,7 +61,7 @@ def call_llm_api(prompt, client):
             # whisper-large-v3-turbo
             # playai-tts
             # playai-tts-arabic
-            model="deepseek-r1-distill-llama-70b",
+            model="qwen-qwq-32b",
             messages=[
                 {"role": "system", "content": "回覆的內容請永遠使用繁體中文，我問你的問題會是五言绝句或七言絕句的開頭部份幾個字，請回答我時使用五言绝句或七言絕句回覆我，不要回覆<think>的內容，只要回覆五言绝句或七言絕句即可，不需要再多給我其他文字內容"},
                 {"role": "user", "content": prompt}
