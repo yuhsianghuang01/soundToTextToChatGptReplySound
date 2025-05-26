@@ -1,8 +1,7 @@
 import requests
-import os
 
-API_KEY = "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"  # Replace with your actual OpenAI API key
-API_URL = "https://api.openai.com/v1/chat/completions"
+API_URL = "https://api.deepseek.com/v1/chat/completions"
+API_KEY = "YOUR_DEEPSEEK_API_KEY"  # 請替換為你的 DeepSeek API 金鑰
 
 headers = {
     "Authorization": f"Bearer {API_KEY}",
@@ -10,10 +9,9 @@ headers = {
 }
 
 data = {
-    "model": "gpt-3.5-turbo",
+    "model": "deepseek-chat",
     "messages": [
-        {"role": "system", "content": "You are a helpful assistant."},
-        {"role": "user", "content": "Hello, who are you?"}
+        {"role": "user", "content": "你好，DeepSeek！"}
     ]
 }
 
