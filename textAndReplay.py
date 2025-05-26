@@ -1,5 +1,8 @@
 from openai import OpenAI
 import pyttsx3
+import speech_recognition as sr
+from vosk import Model, KaldiRecognizer
+import os
 
 def text_to_speech(text, rate=150, volume=1.0, voice_id=None):
     """
@@ -63,7 +66,7 @@ def call_llm_api(prompt, client):
             # playai-tts-arabic
             model="qwen-qwq-32b",
             messages=[
-                {"role": "system", "content": "回覆的內容請永遠使用繁體中文，我問你的問題會是五言绝句或七言絕句的開頭部份幾個字，請回答我時使用五言绝句或七言絕句回覆我，不要回覆<think>的內容，只要回覆五言绝句或七言絕句即可，不需要再多給我其他文字內容"},
+                {"role": "system", "content": "回覆的內容請永遠使用繁體中文，不要回覆<think>的內容，只要回覆重要的10~20字即可"},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -93,6 +96,81 @@ def setup_voice():
         default_voice = voices[0].id if voices else None
         print(f"未找到中文語音，使用預設語音: {default_voice}")
         return default_voice
+
+# 初始化 Vosk 模型
+vosk_model_path = "vosk-model-small-cn-0.22"  # 請確保下載並解壓縮模型到此路徑
+if not os.path.exists(vosk_model_path):
+    raise FileNotFoundError(f"Vosk 模型未找到，請下載並解壓縮到 {vosk_model_path}")
+model = Model(vosk_model_path)
+
+def recognize_speech_from_mic():
+    """使用 Vosk 和 SpeechRecognition 從麥克風接收語音並轉換為文字"""
+    # 列出可用的麥克風裝置，幫助診斷問題
+    print("可用的麥克風裝置:")
+    for index, name in enumerate(sr.Microphone.list_microphone_names()):
+        print(f"麥克風 #{index}: {name}")
+    
+    print("準備麥克風中...")
+    recognizer = sr.Recognizer()
+    
+    try:
+        with sr.Microphone() as source:
+            print("請開始說話 (大聲且清晰地說)...")
+            # 更長時間的環境噪音調整，以提高準確度
+            recognizer.adjust_for_ambient_noise(source, duration=2)
+            print("正在聆聽...")
+            # 增加超時和語音時間限制，確保能夠捕獲完整句子
+            audio = recognizer.listen(source, timeout=12, phrase_time_limit=12)
+            print("接收到音訊，處理中...")
+            
+            # 輸出音訊資訊以診斷問題
+            print(f"音訊樣本率: {audio.sample_rate}Hz, 樣本寬度: {audio.sample_width}位元")
+            
+    except sr.WaitTimeoutError:
+        print("未檢測到語音，請重試。")
+        return ""
+    except Exception as e:
+        print(f"麥克風錯誤: {e}")
+        return ""
+
+    try:
+        # 使用 Google 語音識別嘗試識別（如果有網絡連接）
+        try:
+            google_result = recognizer.recognize_google(audio, language="zh-TW")
+            print(f"Google 識別結果: {google_result}")
+            return google_result
+        except:
+            print("Google 語音識別失敗，嘗試使用 Vosk...")
+        
+        # 使用 Vosk 進行本地語音識別
+        print("開始 Vosk 識別...")
+        recognizer_vosk = KaldiRecognizer(model, 16000)
+        # 將音訊轉換為原始數據
+        raw_data = audio.get_raw_data()
+        print(f"原始音訊數據長度: {len(raw_data)} 位元組")
+        
+        # 處理音訊數據
+        if recognizer_vosk.AcceptWaveform(raw_data):
+            result = recognizer_vosk.Result()
+            print(f"Vosk 原始結果: {result}")
+            # 嘗試解析 JSON 結果
+            import json
+            parsed_result = json.loads(result)
+            text = parsed_result.get("text", "")
+            if text:
+                print(f"Vosk 識別結果: {text}")
+                return text.strip()
+            else:
+                print("Vosk 未能識別語音內容，請重試。")
+                return ""
+        else:
+            vosk_partial = recognizer_vosk.PartialResult()
+            print(f"Vosk 部分結果: {vosk_partial}")
+            print("語音輸入不完整或無法處理，請重試。")
+            return ""
+    except Exception as e:
+        print(f"語音識別失敗: {e}")
+        return ""
 
 def interactive_chat():
     """互動式對話主函數"""
@@ -143,8 +221,57 @@ def interactive_chat():
         print("\n播放語音回應中...")
         text_to_speech(ai_response, rate=150, voice_id=voice_id)
 
+def interactive_chat_with_speech():
+    """互動式對話主函數，支援語音輸入"""
+    # 初始化 OpenAI 客戶端
+    client = OpenAI(
+        api_key="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", 
+        base_url="https://api.groq.com/openai/v1"
+    )
+
+    # 設置語音
+    voice_id = setup_voice()
+
+    print("=" * 50)
+    print("歡迎使用 AI 語音助手！")
+    print("您可以使用語音或文字輸入問題，AI 將回應並用語音播放。")
+    print("輸入 'q' 結束對話。")
+    print("=" * 50)
+
+    while True:
+        # 獲取用戶輸入（語音或文字）
+        print("請選擇輸入方式：1. 語音 2. 文字 (輸入 q 退出): ")
+        mode = input("選擇模式: ").strip()
+
+        if mode.lower() == 'q':
+            print("感謝使用，再見！")
+            break
+
+        if mode == '1':
+            user_input = recognize_speech_from_mic()
+            if not user_input:
+                print("未能識別語音，請重試。")
+                continue
+        elif mode == '2':
+            user_input = input("請輸入您的問題: ").strip()
+        else:
+            print("無效的選擇，請重試。")
+            continue
+
+        # 呼叫 AI API 獲取回應
+        print("AI思考中...")
+        ai_response = call_llm_api(user_input, client)
+
+        # 顯示回應文字
+        print("\nAI回應:")
+        print(ai_response)
+
+        # 將回應轉換為語音
+        print("\n播放語音回應中...")
+        text_to_speech(ai_response, rate=150, voice_id=voice_id)
+
 if __name__ == "__main__":
-    interactive_chat()
+    interactive_chat_with_speech()
 
 
 
