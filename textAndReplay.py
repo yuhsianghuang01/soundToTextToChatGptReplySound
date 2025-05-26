@@ -42,9 +42,28 @@ def call_llm_api(prompt, client):
     """
     try:
         response = client.chat.completions.create(
+            # qwen-qwq-32b
+            # deepseek-r1-distill-llama-70b
+            # gemma2-9b-it
+            # compound-beta
+            # compound-beta-mini
+            # distil-whisper-large-v3-en
+            # llama-3.1-8b-instant
+            # llama-3.3-70b-versatile
+            # llama-guard-3-8b
+            # llama3-70b-8192
+            # llama3-8b-8192
+            # meta-llama/llama-4-maverick-17b-128e-instruct
+            # meta-llama/llama-4-scout-17b-16e-instruct
+            # meta-llama/llama-guard-4-12b
+            # mistral-saba-24b
+            # whisper-large-v3
+            # whisper-large-v3-turbo
+            # playai-tts
+            # playai-tts-arabic
             model="deepseek-r1-distill-llama-70b",
             messages=[
-                {"role": "system", "content": "回覆的內容請永遠使用繁體中文，且回答應該簡潔明瞭"},
+                {"role": "system", "content": "回覆的內容請永遠使用繁體中文，我問你的問題會是五言绝句或七言絕句的開頭部份幾個字，請回答我時使用五言绝句或七言絕句回覆我，不要回覆<think>的內容，只要回覆五言绝句或七言絕句即可，不需要再多給我其他文字內容"},
                 {"role": "user", "content": prompt}
             ]
         )
@@ -79,7 +98,7 @@ def interactive_chat():
     """互動式對話主函數"""
     # 初始化 OpenAI 客戶端
     client = OpenAI(
-        api_key="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", 
+        api_key="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", 
         base_url="https://api.groq.com/openai/v1"
     )
     
@@ -126,3 +145,7 @@ def interactive_chat():
 
 if __name__ == "__main__":
     interactive_chat()
+
+
+
+
