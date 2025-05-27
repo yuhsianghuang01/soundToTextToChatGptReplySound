@@ -3,6 +3,7 @@ import pyttsx3
 import speech_recognition as sr
 from vosk import Model, KaldiRecognizer
 import os
+import json
 
 def text_to_speech(text, rate=150, volume=1.0, voice_id=None):
     """
@@ -45,32 +46,31 @@ def call_llm_api(prompt, client):
     """
     try:
         response = client.chat.completions.create(
-            # qwen-qwq-32b
-            # deepseek-r1-distill-llama-70b
-            # gemma2-9b-it
-            # compound-beta
-            # compound-beta-mini
-            # distil-whisper-large-v3-en
-            # llama-3.1-8b-instant
-            # llama-3.3-70b-versatile
-            # llama-guard-3-8b
-            # llama3-70b-8192
-            # llama3-8b-8192
-            # meta-llama/llama-4-maverick-17b-128e-instruct
-            # meta-llama/llama-4-scout-17b-16e-instruct
-            # meta-llama/llama-guard-4-12b
-            # mistral-saba-24b
-            # whisper-large-v3
-            # whisper-large-v3-turbo
-            # playai-tts
-            # playai-tts-arabic
-            model="qwen-qwq-32b",
+            #qwen-qwq-32b
+            #deepseek-r1-distill-llama-70b
+            #allam-2-7b
+            #compound-beta
+            #compound-beta-mini
+            #gemma2-9b-it
+            #llama-3.1-8b-instant
+            #llama-3.3-70b-versatile
+            #llama-guard-3-8b
+            #llama3-70b-8192
+            #llama3-8b-8192
+            #meta-llama/llama-4-maverick-17b-128e-instruct
+            #meta-llama/llama-4-scout-17b-16e-instruct
+            #meta-llama/llama-guard-4-12b
+            #mistral-saba-24b
+            model="deepseek-r1-distill-llama-70b",
             messages=[
                 {"role": "system", "content": "回覆的內容請永遠使用繁體中文，不要回覆<think>的內容，只要回覆重要的10~20字即可"},
+                {"role": "system", "content": "請忽略 <think> 標籤及其內容，回覆時不要包含任何 <think> 標籤的內容，只需回覆重要的10~20字即可。"},
                 {"role": "user", "content": prompt}
             ]
         )
-        return response.choices[0].message.content
+        raw_response = response.choices[0].message.content
+        return clean_response(raw_response)
+        #return response.choices[0].message.content
     except Exception as e:
         print(f"發生錯誤: {e}")
         return f"抱歉，發生錯誤: {e}"
@@ -218,15 +218,38 @@ def interactive_chat():
         print(ai_response)
         
         # 將回應轉換為語音
-        print("\n播放語音回應中...")
-        text_to_speech(ai_response, rate=150, voice_id=voice_id)
+        #print("\n播放語音回應中...")
+        #text_to_speech(ai_response, rate=150, voice_id=voice_id)
+
+def clean_response(response):
+    """
+    移除回應中的 <think> 標籤及其內容
+    """
+    import re
+    # 使用正則表達式移除 <think> 標籤及其內容
+    cleaned_response = re.sub(r"<think>.*?</think>", "", response, flags=re.DOTALL)
+    return cleaned_response.strip()
 
 def interactive_chat_with_speech():
     """互動式對話主函數，支援語音輸入"""
-    # 初始化 OpenAI 客戶端
+    # 讀取組態檔
+    config_path = "config.json"
+    if not os.path.exists(config_path):
+        raise FileNotFoundError(f"組態檔未找到，請確保 {config_path} 存在並包含必要的設定。")
+
+    with open(config_path, "r", encoding="utf-8") as config_file:
+        config = json.load(config_file)
+
+    api_key = config.get("api_key")
+    base_url = config.get("base_url")
+
+    if not api_key or not base_url:
+        raise ValueError("組態檔中缺少 api_key 或 base_url 設定。")
+
+    # 初始化 OpenAI 客戶端時使用組態檔中的設定
     client = OpenAI(
-        api_key="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", 
-        base_url="https://api.groq.com/openai/v1"
+        api_key=api_key,
+        base_url=base_url
     )
 
     # 設置語音
