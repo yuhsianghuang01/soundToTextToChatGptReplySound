@@ -67,6 +67,7 @@ def call_llm_api(prompt, client):
             messages=[
                 {"role": "system", "content": "回覆的內容請永遠使用繁體中文，不要回覆<think>的內容，只要回覆重要的10~20字即可"},
                 {"role": "system", "content": "請忽略 <think> 標籤及其內容，回覆時不要包含任何 <think> 標籤的內容，只需回覆重要的10~20字即可。"},
+                {"role": "system", "content": "你現在是一個「詩詞之美」一書的作者，我會隨意問你一句詩詞，你要回覆我詩詞之美的文章。"},
                 {"role": "user", "content": prompt}
             ]
         )
