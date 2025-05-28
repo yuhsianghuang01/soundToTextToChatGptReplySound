@@ -95,15 +95,6 @@ def main():
             cv2.imwrite(photo_path, frame)
             msg = f"照片已儲存至 {photo_path}"
             print(msg)
-            # 在畫面上顯示存儲檔案的路徑
-            # frame = draw_text_on_frame(
-            #     frame,
-            #     f"儲存至: {photo_path}",
-            #     position=(10, 45),
-            #     font=font,
-            #     fill_color=(0, 255, 0),
-            #     clear_area=[(0, 40), (frame.shape[1], 80)]
-            # )
         elif key == ord('r') or (cv2.getWindowProperty('Camera', cv2.WND_PROP_VISIBLE) >= 1 and key == ord('r')):
             # 按下 'r' 鍵開始錄影
             if not is_recording:
@@ -114,15 +105,7 @@ def main():
                 is_recording = True
                 msg = f"開始錄影，影片將儲存至 {video_path}"
                 print(msg)
-                # 在畫面上顯示存儲檔案的路徑
-                # frame = draw_text_on_frame(
-                #     frame,
-                #     f"儲存至: {video_path}",
-                #     position=(10, 45),
-                #     font=font,
-                #     fill_color=(0, 255, 0),
-                #     clear_area=[(0, 40), (frame.shape[1], 80)]
-                # )
+                
         elif key == ord('s') or (cv2.getWindowProperty('Camera', cv2.WND_PROP_VISIBLE) >= 1 and key == ord('s')):
             # 按下 's' 鍵停止錄影
             if is_recording:

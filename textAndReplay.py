@@ -46,21 +46,23 @@ def call_llm_api(prompt, client):
     """
     try:
         response = client.chat.completions.create(
-            #qwen-qwq-32b
-            #deepseek-r1-distill-llama-70b
-            #allam-2-7b
-            #compound-beta
-            #compound-beta-mini
-            #gemma2-9b-it
-            #llama-3.1-8b-instant
-            #llama-3.3-70b-versatile
-            #llama-guard-3-8b
-            #llama3-70b-8192
-            #llama3-8b-8192
-            #meta-llama/llama-4-maverick-17b-128e-instruct
-            #meta-llama/llama-4-scout-17b-16e-instruct
-            #meta-llama/llama-guard-4-12b
-            #mistral-saba-24b
+            # 以下為常用模型名稱參考（僅供註解說明，實際使用請設定 model 參數）
+            # 排名	模型名稱
+            # 1	llama-guard-3-8b
+            # 2	gemma2-9b-it
+            # 3	llama3-70b-8192
+            # 4	llama3-8b-8192
+            # 5	meta-llama/llama-guard-4-12b
+            # 6	llama-3.1-8b-instant
+            # 7	llama-3.3-70b-versatile
+            # 8	mistral-saba-24b
+            # 9	meta-llama/llama-4-scout-17b-16e-instruct
+            # 10	deepseek-r1-distill-llama-70b
+            # 11	qwen-qwq-32b
+            # 12	meta-llama/llama-4-maverick-17b-128e-instruct
+            # 13	compound-beta
+            # 14	compound-beta-mini
+            # 15	allam-2-7b
             model="deepseek-r1-distill-llama-70b",
             messages=[
                 {"role": "system", "content": "回覆的內容請永遠使用繁體中文，不要回覆<think>的內容，只要回覆重要的10~20字即可"},
