@@ -4,8 +4,10 @@ from datetime import datetime
 
 def main():
     # 創建存放影片的資料夾
-    video_dir = os.path.join('demo', 'videos')
-    os.makedirs(video_dir, exist_ok=True)
+    
+    #video_dir = os.path.join('demo', 'videos') # 設定影片與照片儲存的資料夾路徑（demo/videos）
+    video_dir = 'CameraFiles'
+    os.makedirs(video_dir, exist_ok=True) # 如果資料夾不存在則自動建立
 
     # 初始化攝影機
     cap = cv2.VideoCapture(0)
