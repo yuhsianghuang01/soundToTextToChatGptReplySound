@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+
+<head>
+    <meta charset="UTF-8">
+    <title>專案 Python 程式與功能對照表</title>
+    <style>
+        body {
+            font-family: 'Microsoft JhengHei', Arial, sans-serif;
+            background: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 30px auto;
+            background: #fff;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px #0001;
+            padding: 32px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 24px 0;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 10px;
+            text-align: left;
+        }
+
+        th {
+            background: #e6f7ff;
+        }
+
+        tr:nth-child(even) {
+            background: #fafafa;
+        }
+
+        .section-title {
+            margin-top: 40px;
+            color: #1890ff;
+        }
+
+        pre {
+            background: #f8f8f8;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 10px;
+            font-family: 'Courier New', Courier, monospace;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>專案 Python 程式與功能對照表</h1>
+        <table>
+            <tr>
+                <th>檔案名稱</th>
+                <th>主要功能/用途</th>
+            </tr>
+            <tr>
+                <td>main.py</td>
+                <td>呼叫 Groq LLM API，取得 AI 回應（繁體中文），可作為 GPT API 呼叫範例。</td>
+            </tr>
+            <tr>
+                <td>call_llm_api.py</td>
+                <td>呼叫本地或遠端 LLM API，取得 AI 回應（gpt-4o-mini），可作為 API 測試。</td>
+            </tr>
+            <tr>
+                <td>libSizeCalc.py</td>
+                <td>查詢 PyPI 套件及其相依套件的總大小（MB），適合分析 Python 套件體積。</td>
+            </tr>
+            <tr>
+                <td>test_cv2.py</td>
+                <td>測試 OpenCV GUI 功能（顯示空白視窗），驗證 cv2.imshow 是否可用。</td>
+            </tr>
+            <tr>
+                <td>winApp.py</td>
+                <td>簡單 Tkinter 視窗應用程式，按下按鈕顯示 Hello 訊息。</td>
+            </tr>
+            <tr>
+                <td>camera.py</td>
+                <td>攝影機即時畫面顯示、拍照、錄影（含中文訊息顯示），支援 mp4 錄影與照片存檔。</td>
+            </tr>
+            <tr>
+                <td>faceCamera.py</td>
+                <td>人臉與眼睛偵測，並以語音播報眼睛移動方向，支援即時視訊顯示。</td>
+            </tr>
+            <tr>
+                <td>faceMarkCamera.py</td>
+                <td>人臉偵測與標記，支援拍照、錄影、停止錄影等功能。</td>
+            </tr>
+            <tr>
+                <td>gesture.py</td>
+                <td>手勢偵測（膚色遮罩），偵測手勢方向並語音播報（上/下/左/右）。</td>
+            </tr>
+            <tr>
+                <td>say.py</td>
+                <td>文字轉語音（TTS）功能，支援多語音、語速、音量切換，並可列出所有語音。</td>
+            </tr>
+            <tr>
+                <td>translatation.py</td>
+                <td>使用 Groq API 進行多語言翻譯（可自訂來源與目標語言）。</td>
+            </tr>
+            <tr>
+                <td>textAndReplay.py</td>
+                <td>AI 語音助手：可用文字或語音輸入，AI 回應並語音播放，支援互動式對話。</td>
+            </tr>
+        </table>
+
+        <h2 class="section-title">安裝與執行說明</h2>
+        <ol>
+            <li><strong>安裝 Python 相關套件</strong>（建議使用 uv，或 pip）：
+                <pre>uv pip install -r requirements.txt</pre>
+                <div>如無 requirements.txt，請依需求安裝：
+                    <pre>uv pip install opencv-python pyttsx3 pillow openai speechrecognition vosk requests python-dotenv</pre>
+                </div>
+            </li>
+            <li><strong>執行程式</strong>：
+                <ul>
+                    <li>一般執行（以 <code>textAndReplay.py</code> 為例）：<br>
+                        <pre>python textAndReplay.py</pre>
+                    </li>
+                    <li>使用 uv 執行：<br>
+                        <pre>uv run textAndReplay.py</pre>
+                    </li>
+                </ul>
+            </li>
+            <li><strong>常見功能說明</strong>：
+                <ul>
+                    <li>camera.py、faceCamera.py、faceMarkCamera.py、gesture.py 需有攝影機設備。</li>
+                    <li>faceCamera.py、faceMarkCamera.py 需放置
+                        <code>haarcascade_frontalface_default.xml</code>、<code>haarcascade_eye.xml</code> 於同目錄。</li>
+                    <li>textAndReplay.py 需 <code>config.json</code> 設定 API 金鑰與 base_url，vosk 語音模型需下載解壓於
+                        <code>vosk-model-small-cn-0.22</code>。</li>
+                    <li>say.py、gesture.py、faceCamera.py 皆可語音播報，支援多語音。</li>
+                    <li>libSizeCalc.py 需網路連線查詢 PyPI。</li>
+                </ul>
+            </li>
+        </ol>
+
+        <h2 class="section-title">各程式詳細功能摘要</h2>
+        <ul>
+            <li><b>main.py</b>：呼叫 Groq LLM API，取得 AI 回應（繁體中文），可作為 GPT API 呼叫範例。</li>
+            <li><b>call_llm_api.py</b>：呼叫本地或遠端 LLM API，取得 AI 回應（gpt-4o-mini），可作為 API 測試。</li>
+            <li><b>libSizeCalc.py</b>：查詢 PyPI 套件及其相依套件的總大小（MB），適合分析 Python 套件體積。</li>
+            <li><b>test_cv2.py</b>：測試 OpenCV GUI 功能（顯示空白視窗），驗證 cv2.imshow 是否可用。</li>
+            <li><b>winApp.py</b>：簡單 Tkinter 視窗應用程式，按下按鈕顯示 Hello 訊息。</li>
+            <li><b>camera.py</b>：攝影機即時畫面顯示、拍照、錄影（含中文訊息顯示），支援 mp4 錄影與照片存檔。</li>
+            <li><b>faceCamera.py</b>：人臉與眼睛偵測，並以語音播報眼睛移動方向，支援即時視訊顯示。</li>
+            <li><b>faceMarkCamera.py</b>：人臉偵測與標記，支援拍照、錄影、停止錄影等功能。</li>
+            <li><b>gesture.py</b>：手勢偵測（膚色遮罩），偵測手勢方向並語音播報（上/下/左/右）。</li>
+            <li><b>say.py</b>：文字轉語音（TTS）功能，支援多語音、語速、音量切換，並可列出所有語音。</li>
+            <li><b>translatation.py</b>：使用 Groq API 進行多語言翻譯（可自訂來源與目標語言）。</li>
+            <li><b>textAndReplay.py</b>：AI 語音助手：可用文字或語音輸入，AI 回應並語音播放，支援互動式對話。</li>
+        </ul>
+
+        <h2 class="section-title">常見問題與注意事項</h2>
+        <ul>
+            <li>如遇 OpenCV GUI 問題，請確認安裝 <code>opencv-python</code> 而非 <code>opencv-python-headless</code>。</li>
+            <li>如遇語音播報問題，請確認 pyttsx3 安裝正確，且系統有可用語音。</li>
+            <li>如需語音辨識，請下載並解壓 vosk 中文模型至 <code>vosk-model-small-cn-0.22</code>。</li>
+            <li>API 金鑰與 base_url 請於 <code>config.json</code> 設定。</li>
+        </ul>
+    </div>
+</body>
+
+</html>
