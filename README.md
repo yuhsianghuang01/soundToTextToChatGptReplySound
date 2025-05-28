@@ -70,3 +70,48 @@
 - 如遇語音播報問題，請確認 pyttsx3 安裝正確，且系統有可用語音。
 - 如需語音辨識，請下載並解壓 vosk 中文模型至 `vosk-model-small-cn-0.22`。
 - API 金鑰與 base_url 請於 `config.json` 設定。
+
+---
+
+## 專案影片區
+
+以下為 CameraFiles/ 目錄下所有影片檔案預覽：
+
+<details>
+<summary>點擊展開/收合影片清單</summary>
+
+```
+CameraFiles/20250528063251.mp4
+CameraFiles/錄製_2025_05_28_23_31_51_679.mp4
+CameraFiles/錄製_2025_05_28_23_39_26_460.mp4
+CameraFiles/錄製_2025_05_28_23_43_25_651.mp4
+CameraFiles/錄製_2025_05_28_23_47_07_300.mp4
+CameraFiles/錄製_2025_05_28_23_52_19_678.mp4
+CameraFiles/錄製_2025_05_28_23_53_36_623.mp4
+CameraFiles/錄製_2025_05_28_23_56_48_75.mp4
+CameraFiles/錄製_2025_05_28_23_57_49_842.mp4
+CameraFiles/錄製_2025_05_29_00_00_38_405.mp4
+CameraFiles/錄製_2025_05_29_00_05_57_45.mp4
+CameraFiles/錄製_2025_05_29_00_09_48_790.mp4
+CameraFiles/錄製_2025_05_29_00_15_16_406.mp4
+```
+
+---
+
+> 如下為影片嵌入預覽（僅支援支援 HTML 的 Markdown 閱讀器）：
+
+<video src="CameraFiles/20250528063251.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_31_51_679.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_39_26_460.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_43_25_651.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_47_07_300.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_52_19_678.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_53_36_623.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_56_48_75.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_28_23_57_49_842.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_29_00_00_38_405.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_29_00_05_57_45.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_29_00_09_48_790.mp4" controls width="320"></video>
+<video src="CameraFiles/錄製_2025_05_29_00_15_16_406.mp4" controls width="320"></video>
+
+</details>
